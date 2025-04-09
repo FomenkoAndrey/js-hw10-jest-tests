@@ -1,5 +1,6 @@
 (function () {
-
+  // ТЕСТ ВІДСТЕЖЕННЯ ЗМІН - 2 - оновлена перевірка
+  
   const container = document.querySelector('#carousel');
   const slides = container.querySelectorAll('.slide');
   const indicatorsContainer = container.querySelector('#indicators-container');
@@ -96,14 +97,6 @@
 
   // add swipe support
   function swipeStartHandler (e) {
-    // if (e instanceof MouseEvent) {
-    //   startPosX = e.clientX;
-    //   return;
-    // }
-    //
-    // if (e instanceof TouchEvent) {
-    //   startPosX = e.changedTouches[0].clientX;
-    // }
     startPosX = e instanceof MouseEvent
         ? e.clientX // MouseEvent
         : e.changedTouches[0].clientX; // TouchEvent
