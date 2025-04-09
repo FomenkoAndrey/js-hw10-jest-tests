@@ -134,12 +134,14 @@ describe('Carousel Functionality', () => {
   });
 
   test('Циклічний перехід вперед (з останнього на перший)', () => {
-    // Активуємо останній слайд (імітуємо, що ми на останньому слайді)
-    slides[0].classList.remove('active');
-    slides[2].classList.add('active');
-    indicators[0].classList.remove('active');
-    indicators[2].classList.add('active');
-
+    // Спочатку переходимо до другого слайду
+    nextBtn.click();
+    expect(slides[1].classList.contains('active')).toBe(true);
+    
+    // Потім переходимо до третього (останнього) слайду
+    nextBtn.click();
+    expect(slides[2].classList.contains('active')).toBe(true);
+    
     // Клікаємо на кнопку Далі для переходу з останнього на перший
     nextBtn.click();
     
