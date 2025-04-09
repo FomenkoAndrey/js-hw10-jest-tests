@@ -79,6 +79,7 @@ describe('Carousel Functionality', () => {
     expect(slides[0].classList.contains('active')).toBe(false);
     expect(slides[2].classList.contains('active')).toBe(true);
     expect(indicators[2].classList.contains('active')).toBe(true);
+    expect(window.clearInterval).toHaveBeenCalled();
   });
 
   test('Пауза та відтворення', () => {
@@ -95,6 +96,7 @@ describe('Carousel Functionality', () => {
     indicators[1].click();
     expect(slides[1].classList.contains('active')).toBe(true);
     expect(indicators[1].classList.contains('active')).toBe(true);
+    expect(window.clearInterval).toHaveBeenCalled();
   });
 
   test('Керування клавіатурою', () => {
@@ -129,5 +131,73 @@ describe('Carousel Functionality', () => {
   test('Автоматичне перемикання', () => {
     vi.advanceTimersByTime(2000);
     expect(slides[1].classList.contains('active')).toBe(true);
+  });
+
+  test('Циклічний перехід вперед (з останнього на перший)', () => {
+    // Активуємо останній слайд (імітуємо, що ми на останньому слайді)
+    slides[0].classList.remove('active');
+    slides[2].classList.add('active');
+    indicators[0].classList.remove('active');
+    indicators[2].classList.add('active');
+
+    // Клікаємо на кнопку Далі для переходу з останнього на перший
+    nextBtn.click();
+    
+    // Перевіряємо, що відбувся перехід на перший слайд
+    expect(slides[0].classList.contains('active')).toBe(true);
+    expect(indicators[0].classList.contains('active')).toBe(true);
+  });
+
+  test('Циклічний перехід назад (з першого на останній)', () => {
+    // Перевіряємо, що ми на першому слайді
+    expect(slides[0].classList.contains('active')).toBe(true);
+    
+    // Клікаємо на кнопку Назад для переходу з першого на останній
+    prevBtn.click();
+    
+    // Перевіряємо, що відбувся перехід на останній слайд
+    expect(slides[2].classList.contains('active')).toBe(true);
+    expect(indicators[2].classList.contains('active')).toBe(true);
+  });
+
+  test('Свайпи для десктопу і сенсорних пристроїв', () => {
+    // Тестування свайпу миші вліво (для переходу вперед)
+    container.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
+    container.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 150 }));
+    expect(slides[1].classList.contains('active')).toBe(true);
+    expect(window.clearInterval).toHaveBeenCalled();
+    
+    // Тестування свайпу миші вправо (для переходу назад)
+    container.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
+    container.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 450 }));
+    expect(slides[0].classList.contains('active')).toBe(true);
+    expect(window.clearInterval).toHaveBeenCalled();
+    
+    // Імітуємо TouchEvent для сенсорних пристроїв
+    const createTouchStartEvent = clientX => {
+      const event = new Event('touchstart', { bubbles: true });
+      Object.defineProperty(event, 'changedTouches', {
+        value: [{ clientX }]
+      });
+      return event;
+    };
+    
+    const createTouchEndEvent = clientX => {
+      const event = new Event('touchend', { bubbles: true });
+      Object.defineProperty(event, 'changedTouches', {
+        value: [{ clientX }]
+      });
+      return event;
+    };
+    
+    // Тестування свайпу сенсорного екрану вліво (для переходу вперед)
+    container.dispatchEvent(createTouchStartEvent(300));
+    container.dispatchEvent(createTouchEndEvent(150));
+    expect(slides[1].classList.contains('active')).toBe(true);
+    
+    // Тестування свайпу сенсорного екрану вправо (для переходу назад)
+    container.dispatchEvent(createTouchStartEvent(300));
+    container.dispatchEvent(createTouchEndEvent(450));
+    expect(slides[0].classList.contains('active')).toBe(true);
   });
 });
