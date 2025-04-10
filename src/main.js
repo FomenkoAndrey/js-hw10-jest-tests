@@ -1,6 +1,4 @@
 (function () {
-  // ТЕСТ ВІДСТЕЖЕННЯ ЗМІН - 2 - оновлена перевірка
-  
   const container = document.querySelector('#carousel');
   const slides = container.querySelectorAll('.slide');
   const indicatorsContainer = container.querySelector('#indicators-container');
@@ -24,7 +22,6 @@
   let startPosX = null;
   let endPosX = null;
 
-  // carousel basic engine
   function gotoNth (n) {
     slides[currentSlide].classList.toggle('active');
     indicatorItems[currentSlide].classList.toggle('active');
@@ -41,12 +38,10 @@
     gotoNth(currentSlide + 1)
   }
 
-  // tick -> setInterval
   function tick() {
     timerID = setInterval(gotoNext, TIMER_INTERVAL);
   }
 
-  // controls
   function pauseHandler (){
     if (!isPlaying) return
     pauseBtn.innerHTML = FA_PLAY;
@@ -74,7 +69,6 @@
     gotoNext();
   }
 
-  // indicators
   function indicateHandler (e) {
     const { target } = e
 
@@ -84,7 +78,6 @@
     }
   }
 
-  // set keyboard controls
   function pressKeyHandler (e) {
     const { code } = e
     if (code === CODE_ARROW_LEFT) prevHandler();
@@ -95,29 +88,21 @@
     }
   }
 
-  // add swipe support
   function swipeStartHandler (e) {
     startPosX = e instanceof MouseEvent
-        ? e.clientX // MouseEvent
-        : e.changedTouches[0].clientX; // TouchEvent
+        ? e.clientX
+        : e.changedTouches[0].clientX;
   }
 
-  // add swipe support
   function swipeEndHandler(e) {
-    // if (e instanceof MouseEvent) {
-    //   endPosX = e.clientX;
-    // } else if (e instanceof TouchEvent) {
-    //   endPosX = e.changedTouches[0].clientX;
-    // }
     endPosX = e instanceof MouseEvent
-        ? e.clientX // MouseEvent
-        : e.changedTouches[0].clientX; // TouchEvent
+        ? e.clientX
+        : e.changedTouches[0].clientX;
 
     if (endPosX - startPosX > 100) prevHandler();
     if (endPosX - startPosX < -100) nextHandler();
   }
 
-  // listeners activation
   function initListeners () {
     pauseBtn.addEventListener('click', pausePlayHandler);
     nextBtn.addEventListener('click', nextHandler);
@@ -130,12 +115,10 @@
     document.addEventListener('keydown', pressKeyHandler);
   }
 
-  // activate controls, if javascript is enabled
   function init () {
     initListeners();
     tick();
   }
 
   init();
-
 }());
