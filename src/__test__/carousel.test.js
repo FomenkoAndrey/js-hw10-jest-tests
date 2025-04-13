@@ -10,9 +10,11 @@ const carouselCode = fs.readFileSync(mainJsPath, 'utf-8');
 function setupDOM() {
   document.body.innerHTML = `
     <div id="carousel">
-      <div class="slide active"></div>
-      <div class="slide"></div>
-      <div class="slide"></div>
+      <div id="slides-container">
+        <div class="slide active"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+      </div>
       <div id="indicators-container">
         <div class="indicator active" data-slide-to="0"></div>
         <div class="indicator" data-slide-to="1"></div>
@@ -119,12 +121,13 @@ describe('Carousel Functionality', () => {
   });
 
   test('Свайп', () => {
-    container.dispatchEvent(new MouseEvent('mousedown', { clientX: 300 }));
-    container.dispatchEvent(new MouseEvent('mouseup', { clientX: 450 }));
+    const slidesContainer = container.querySelector('#slides-container');
+    slidesContainer.dispatchEvent(new MouseEvent('mousedown', { clientX: 300 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mouseup', { clientX: 450 }));
     expect(slides[2].classList.contains('active')).toBe(true);
 
-    container.dispatchEvent(new MouseEvent('mousedown', { clientX: 300 }));
-    container.dispatchEvent(new MouseEvent('mouseup', { clientX: 150 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mousedown', { clientX: 300 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mouseup', { clientX: 150 }));
     expect(slides[0].classList.contains('active')).toBe(true);
   });
 
@@ -163,15 +166,17 @@ describe('Carousel Functionality', () => {
   });
 
   test('Свайпи для десктопу і сенсорних пристроїв', () => {
+    const slidesContainer = container.querySelector('#slides-container');
+    
     // Тестування свайпу миші вліво (для переходу вперед)
-    container.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
-    container.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 150 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 150 }));
     expect(slides[1].classList.contains('active')).toBe(true);
     expect(window.clearInterval).toHaveBeenCalled();
     
     // Тестування свайпу миші вправо (для переходу назад)
-    container.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
-    container.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 450 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
+    slidesContainer.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 450 }));
     expect(slides[0].classList.contains('active')).toBe(true);
     expect(window.clearInterval).toHaveBeenCalled();
     
@@ -193,13 +198,13 @@ describe('Carousel Functionality', () => {
     };
     
     // Тестування свайпу сенсорного екрану вліво (для переходу вперед)
-    container.dispatchEvent(createTouchStartEvent(300));
-    container.dispatchEvent(createTouchEndEvent(150));
+    slidesContainer.dispatchEvent(createTouchStartEvent(300));
+    slidesContainer.dispatchEvent(createTouchEndEvent(150));
     expect(slides[1].classList.contains('active')).toBe(true);
     
     // Тестування свайпу сенсорного екрану вправо (для переходу назад)
-    container.dispatchEvent(createTouchStartEvent(300));
-    container.dispatchEvent(createTouchEndEvent(450));
+    slidesContainer.dispatchEvent(createTouchStartEvent(300));
+    slidesContainer.dispatchEvent(createTouchEndEvent(450));
     expect(slides[0].classList.contains('active')).toBe(true);
   });
 });
