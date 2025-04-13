@@ -30,7 +30,7 @@ function setupDOM() {
 }
 
 describe('Carousel Functionality', () => {
-  let container, slides, indicators, pauseBtn, prevBtn, nextBtn;
+  let container, slides, indicators, pauseBtn, prevBtn, nextBtn, slidesContainer;
 
   beforeEach(() => {
     // Налаштовуємо DOM
@@ -48,6 +48,7 @@ describe('Carousel Functionality', () => {
 
     // Отримуємо елементи
     container = document.querySelector('#carousel');
+    slidesContainer = container.querySelector('#slides-container');
     slides = container.querySelectorAll('.slide');
     indicators = container.querySelectorAll('.indicator');
     pauseBtn = document.querySelector('#pause-btn');
@@ -121,7 +122,6 @@ describe('Carousel Functionality', () => {
   });
 
   test('Свайп', () => {
-    const slidesContainer = container.querySelector('#slides-container');
     slidesContainer.dispatchEvent(new MouseEvent('mousedown', { clientX: 300 }));
     slidesContainer.dispatchEvent(new MouseEvent('mouseup', { clientX: 450 }));
     expect(slides[2].classList.contains('active')).toBe(true);
@@ -166,8 +166,6 @@ describe('Carousel Functionality', () => {
   });
 
   test('Свайпи для десктопу і сенсорних пристроїв', () => {
-    const slidesContainer = container.querySelector('#slides-container');
-    
     // Тестування свайпу миші вліво (для переходу вперед)
     slidesContainer.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 300 }));
     slidesContainer.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, clientX: 150 }));
