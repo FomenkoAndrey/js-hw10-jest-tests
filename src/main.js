@@ -12,8 +12,8 @@ const SLIDES_COUNT = slides.length
 const CODE_ARROW_LEFT = 'ArrowLeft'
 const CODE_ARROW_RIGHT = 'ArrowRight'
 const CODE_SPACE = 'Space'
-const FA_PAUSE = '<i class="far fa-pause-circle"></i>'
-const FA_PLAY = '<i class="far fa-play-circle"></i>'
+const FA_PAUSE = '<i class="fas fa-pause"></i>'
+const FA_PLAY = '<i class="fas fa-play"></i>'
 const TIMER_INTERVAL = 2000
 
 let currentSlide = 0
@@ -89,17 +89,11 @@ function keydownHandler(e) {
 }
 
 function swipeStartHandler(e) {
-  swipeStartX =
-    e instanceof MouseEvent
-      ? e.clientX
-      : e.changedTouches[0].clientX
+  swipeStartX = e instanceof MouseEvent ? e.clientX : e.changedTouches[0].clientX
 }
 
 function swipeEndHandler(e) {
-  swipeEndX =
-    e instanceof MouseEvent
-      ? e.clientX
-      : e.changedTouches[0].clientX
+  swipeEndX = e instanceof MouseEvent ? e.clientX : e.changedTouches[0].clientX
 
   if (swipeEndX - swipeStartX > 100) prevHandler()
   if (swipeEndX - swipeStartX < -100) nextHandler()
