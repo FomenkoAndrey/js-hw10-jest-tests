@@ -24,7 +24,7 @@
       <div class="indicator" data-slide-to="2"></div>
     </div>
     <div id="controls-container">
-      <button id="pause-btn"><i class="far fa-pause-circle"></i></button>
+      <button id="pause-btn"><i class="fas fa-pause"></i></button>
       <button id="prev-btn"></button>
       <button id="next-btn"></button>
     </div>
@@ -56,7 +56,7 @@
 
   - `SLIDES_COUNT` - кількість слайдів
   - `CODE_ARROW_LEFT`, `CODE_ARROW_RIGHT`, `CODE_SPACE` - для обробки клавіш
-  - `FA_PAUSE`, `FA_PLAY` - HTML для іконок паузи/відтворення
+  - `FA_PAUSE`, `FA_PLAY` - HTML для іконок паузи/відтворення (наприклад, `<i class="fas fa-pause"></i>` та `<i class="fas fa-play"></i>`)
   - `TIMER_INTERVAL` - інтервал автоматичного перемикання (2000 мс)
 
 - **ОБОВ'ЯЗКОВО**: Ваш код має містити наступні змінні:
